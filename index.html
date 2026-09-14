@@ -35,7 +35,7 @@
             top: 0;
             left: 0;
             width: 100%;
-            background: rgba(11, 16, 33, 0.95); /* Deep Midnight with slight transparency */
+            background: rgba(11, 16, 33, 0.95); /* Deep Midnight with transparency */
             backdrop-filter: blur(10px);
             padding: 20px 8%;
             display: flex;
@@ -75,23 +75,12 @@
         .hero {
             min-height: 100vh;
             padding: 160px 8% 80px;
-            /* Ethereal, celestial gradient background */
             background: radial-gradient(circle at top right, #FFF8DF 0%, #FFFFFF 50%, #E6EEFA 100%);
             display: flex;
             align-items: center;
             justify-content: space-between;
             gap: 60px;
             position: relative;
-        }
-
-        .hero::before {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            height: 150px;
-            background: linear-gradient(to top, transparent, rgba(255,255,255,0));
         }
 
         .hero-text {
@@ -104,7 +93,7 @@
             font-weight: 800;
             letter-spacing: 4px;
             margin-bottom: 20px;
-            color: #AA7C11; /* Burnished Gold */
+            color: #AA7C11; 
             text-transform: uppercase;
         }
 
@@ -145,7 +134,7 @@
             text-transform: uppercase;
         }
 
-        /* PHOTO BOX (MAJESTIC RECONSTRUCTION) */
+        /* PHOTO BOX */
         .photo-box {
             width: 360px;
             height: 460px;
@@ -159,7 +148,6 @@
             transition: all 0.5s cubic-bezier(0.25, 1, 0.5, 1);
         }
 
-        /* Ethereal glowing border effect on hover */
         .photo-box:hover {
             transform: translateY(-10px) scale(1.02);
             box-shadow: 0 30px 60px rgba(212, 175, 55, 0.25);
@@ -171,7 +159,7 @@
             height: 100%;
             object-fit: cover;
             display: block;
-            filter: sepia(10%) contrast(105%); /* Soft majestic tone */
+            filter: sepia(10%) contrast(105%);
         }
 
         /* PROMISES SECTION */
@@ -249,7 +237,7 @@
         .talk h2 {
             font-family: 'Cinzel', serif;
             font-size: clamp(45px, 7vw, 80px);
-            line-weight: 1;
+            line-height: 1;
             font-weight: 900;
             color: #0B1021;
             letter-spacing: 1px;
@@ -284,7 +272,6 @@
         .talk-button:hover {
             background: transparent;
             color: #0B1021;
-            font-weight: 900;
         }
 
         /* FINAL SECTION */
@@ -315,7 +302,6 @@
             margin-top: 35px;
             display: inline-block;
             filter: drop-shadow(0 5px 5px rgba(0,0,0,0.1));
-            color: #0B1021;
         }
 
         /* FOOTER */
@@ -344,7 +330,7 @@
             }
             
             .hero {
-                flex-direction: column-reverse; /* Puts majestic typography first on mobile */
+                flex-direction: column-reverse;
                 padding-top: 140px;
                 text-align: center;
             }
@@ -354,3 +340,31 @@
                 border-top: 3px solid #D4AF37;
                 padding-left: 0;
                 padding-top: 20px;
+                margin: 30px auto 0;
+            }
+
+            .photo-box {
+                width: 280px;
+                height: 360px;
+                margin: 0 auto;
+            }
+        }
+
+        @media (max-width: 600px) {
+            nav a {
+                display: none;
+            }
+
+            .hero h1 {
+                letter-spacing: 0px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="nav-name">HARIS SABIR</div>
+        <div>
+            <a href="#home">HOME</a>
+            <a href="#promises">PROMISES</a>
