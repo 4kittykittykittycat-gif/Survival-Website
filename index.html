@@ -1,2306 +1,632 @@
-```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>DIVINE SMP — Enter the Realm</title>
-
-<!-- =========================
-     WEBSITE FAVICON
-========================= -->
-<link rel="icon" type="image/png" href="logo.png">
-
+<title>Divine SMP</title>
+<meta name="description" content="Divine SMP is a Minecraft server with Lifesteal, SpearMace FFA and DiamondSMP FFA. Join at play.divinesmp.org">
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700;800;900&family=Manrope:wght@400;500;600;700;800&display=swap');
+  * { box-sizing: border-box; }
 
-:root {
-    --bg: #020a13;
-    --bg2: #061522;
-    --panel: rgba(8, 25, 39, .72);
+  :root {
+    --forest: #1c3a37;
+    --forest-dark: #132a28;
+    --leaf: #24493f;
+    --leaf-2: #2d5a4a;
+    --grass: #2f6b3c;
+    --wood: #c9692c;
+    --wood-light: #e0843f;
+    --wood-dark: #8e4518;
+    --ink: #3a1d0b;
+    --paper: #fcecc8;
+    --paper-dark: #f0d9a8;
+    --yellow: #ffcf26;
+    --yellow-dark: #c99a00;
+  }
 
-    --blue: #63d9ff;
-    --blue2: #a7edff;
-    --blue-dark: #197ca7;
-
-    --white: #f7fdff;
-    --ice: #dff8ff;
-    --muted: #8ba8b7;
-
-    --border: rgba(130, 225, 255, .18);
-    --border-bright: rgba(130, 225, 255, .42);
-
-    --shadow: rgba(0, 180, 255, .15);
-}
-
-/* =========================
-   RESET
-========================= */
-
-* {
+  body {
     margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-html {
-    scroll-behavior: smooth;
-}
-
-body {
-    min-height: 100vh;
-    overflow-x: hidden;
-
-    background:
-        radial-gradient(
-            circle at 50% -10%,
-            rgba(80, 210, 255, .17),
-            transparent 36%
-        ),
-        radial-gradient(
-            circle at 0% 55%,
-            rgba(50, 160, 220, .07),
-            transparent 30%
-        ),
-        radial-gradient(
-            circle at 100% 70%,
-            rgba(130, 230, 255, .06),
-            transparent 30%
-        ),
-        linear-gradient(
-            180deg,
-            #020810 0%,
-            #04121f 50%,
-            #020910 100%
-        );
-
-    color: var(--white);
-    font-family: 'Manrope', sans-serif;
-}
-
-/* =========================
-   STAR / SNOW BACKGROUND
-========================= */
-
-#particles {
-    position: fixed;
-    inset: 0;
-    overflow: hidden;
-    pointer-events: none;
-    z-index: 0;
-}
-
-.particle {
-    position: absolute;
-
-    width: 3px;
-    height: 3px;
-
-    border-radius: 50%;
-
-    background: white;
-
-    box-shadow:
-        0 0 8px rgba(150, 235, 255, .9);
-
-    opacity: 0;
-
-    animation: snowfall linear infinite;
-}
-
-@keyframes snowfall {
-
-    0% {
-        transform:
-            translate3d(0, -10vh, 0)
-            rotate(0deg);
-
-        opacity: 0;
-    }
-
-    10% {
-        opacity: .8;
-    }
-
-    50% {
-        transform:
-            translate3d(30px, 50vh, 0)
-            rotate(180deg);
-    }
-
-    90% {
-        opacity: .3;
-    }
-
-    100% {
-        transform:
-            translate3d(-25px, 110vh, 0)
-            rotate(360deg);
-
-        opacity: 0;
-    }
-}
-
-/* =========================
-   NAVBAR
-========================= */
-
-.navbar {
-    position: fixed;
-
-    top: 0;
-    left: 0;
-    right: 0;
-
-    height: 78px;
-
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-
-    padding: 0 7%;
-
-    background: rgba(2, 10, 17, .65);
-
-    backdrop-filter: blur(18px);
-
-    border-bottom:
-        1px solid rgba(130, 225, 255, .1);
-
-    z-index: 1000;
-}
-
-.logo {
-    color: white;
-
-    font-family: 'Cinzel', serif;
-
-    font-size: 24px;
-    font-weight: 800;
-
-    letter-spacing: 6px;
-
-    text-shadow:
-        0 0 20px rgba(100, 220, 255, .35);
-}
-
-.logo span {
-    color: var(--blue);
-}
-
-.nav-links {
-    display: flex;
-    gap: 34px;
-}
-
-.nav-links a {
-    position: relative;
-
-    color: #9cb4c1;
-
-    text-decoration: none;
-
-    font-size: 11px;
-    font-weight: 700;
-
-    letter-spacing: 2px;
-
-    transition: .25s;
-}
-
-.nav-links a:hover {
-    color: white;
-
-    text-shadow:
-        0 0 15px rgba(100, 220, 255, .6);
-}
-
-.nav-links a::after {
-    content: "";
-
-    position: absolute;
-
-    left: 50%;
-    bottom: -9px;
-
-    width: 0;
-    height: 1px;
-
-    background: var(--blue);
-
-    transform: translateX(-50%);
-
-    transition: .25s;
-
-    box-shadow:
-        0 0 10px var(--blue);
-}
-
-.nav-links a:hover::after {
-    width: 70%;
-}
-
-/* =========================
-   HERO
-========================= */
-
-.hero {
-    position: relative;
-
-    min-height: 100vh;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    text-align: center;
-
-    padding:
-        140px 20px
-        90px;
-
-    z-index: 1;
-
-    overflow: hidden;
-}
-
-.hero::before {
-    content: "";
-
-    position: absolute;
-
-    width: 850px;
-    height: 500px;
-
-    left: 50%;
-    top: 40%;
-
-    transform:
-        translate(-50%, -50%);
-
-    background:
-        radial-gradient(
-            ellipse,
-            rgba(70, 210, 255, .17),
-            rgba(70, 210, 255, .05) 40%,
-            transparent 72%
-        );
-
-    filter: blur(15px);
-
-    pointer-events: none;
-}
-
-.hero::after {
-    content: "";
-
-    position: absolute;
-
-    left: 0;
-    right: 0;
-    bottom: 0;
-
-    height: 180px;
-
-    background:
-        linear-gradient(
-            transparent,
-            #020a13
-        );
-
-    pointer-events: none;
-}
-
-.hero-content {
-    position: relative;
-
-    z-index: 2;
-
-    max-width: 1000px;
-}
-
-/* =========================
-   CELESTIAL EMBLEM
-========================= */
-
-.emblem {
-    width: 74px;
-    height: 74px;
-
-    margin:
-        0 auto 30px;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    border:
-        1px solid rgba(150, 235, 255, .4);
-
-    transform: rotate(45deg);
-
-    box-shadow:
-        0 0 45px rgba(60, 210, 255, .12),
-        inset 0 0 25px rgba(60, 210, 255, .05);
-
-    animation: emblemFloat 4s ease-in-out infinite;
-}
-
-.emblem::before {
-    content: "";
-
-    width: 48px;
-    height: 48px;
-
-    border:
-        1px solid rgba(255, 255, 255, .45);
-}
-
-.emblem span {
-    position: absolute;
-
-    transform: rotate(-45deg);
-
-    color: white;
-
-    font-size: 26px;
-
-    text-shadow:
-        0 0 18px var(--blue);
-}
-
-@keyframes emblemFloat {
-    0%,100% {
-        transform:
-            rotate(45deg)
-            translateY(0);
-    }
-
-    50% {
-        transform:
-            rotate(45deg)
-            translateY(-7px);
-    }
-}
-
-/* =========================
-   HERO TEXT
-========================= */
-
-.overline {
-    color: var(--blue);
-
-    font-size: 10px;
-    font-weight: 800;
-
-    letter-spacing: 5px;
-
-    margin-bottom: 22px;
-}
-
-.hero h1 {
-    font-family: 'Cinzel', serif;
-
-    font-size:
-        clamp(70px, 15vw, 180px);
-
-    line-height: .85;
-
-    letter-spacing:
-        clamp(3px, 1vw, 12px);
-
-    font-weight: 800;
-
-    color: white;
-
-    text-shadow:
-        0 0 15px rgba(255,255,255,.15),
-        0 0 45px rgba(80,215,255,.2),
-        0 0 90px rgba(50,170,230,.12);
-
-    margin-bottom: 30px;
-}
-
-.hero h1 span {
-    color: var(--blue);
-
-    text-shadow:
-        0 0 20px rgba(90,220,255,.75),
-        0 0 50px rgba(50,180,240,.4);
-}
-
-.hero-description {
-    max-width: 650px;
-
-    margin:
-        0 auto 38px;
-
-    color: #91aebb;
-
-    font-size: 17px;
-
-    line-height: 1.8;
-}
-
-/* =========================
-   BUTTONS
-========================= */
-
-.buttons {
-    display: flex;
-
-    justify-content: center;
-
-    flex-wrap: wrap;
-
-    gap: 13px;
-}
-
-.btn {
-    position: relative;
-
-    height: 54px;
-
-    min-width: 180px;
-
-    display: inline-flex;
-
-    align-items: center;
-
-    justify-content: center;
-
-    padding: 0 27px;
-
-    text-decoration: none;
-
-    border: 1px solid var(--border-bright);
-
-    font-size: 11px;
-    font-weight: 800;
-
-    letter-spacing: 2px;
-
-    transition:
-        .3s;
-
-    cursor: pointer;
-
-    overflow: hidden;
-}
-
-.btn-primary {
-    color: #001018;
-
-    background:
-        linear-gradient(
-            135deg,
-            #a8f1ff,
-            #55cbed
-        );
-
-    box-shadow:
-        0 0 25px rgba(70,210,255,.15);
-}
-
-.btn-primary:hover {
-    transform: translateY(-4px);
-
-    box-shadow:
-        0 12px 35px rgba(50,200,255,.3),
-        0 0 35px rgba(100,225,255,.15);
-}
-
-.btn-secondary {
-    color: #dff9ff;
-
-    background:
-        rgba(120,220,255,.035);
-
-    backdrop-filter: blur(10px);
-}
-
-.btn-secondary:hover {
-    transform: translateY(-4px);
-
-    border-color:
-        rgba(150,240,255,.75);
-
-    background:
-        rgba(100,220,255,.08);
-
-    box-shadow:
-        0 10px 30px rgba(40,190,240,.12);
-}
-
-/* =========================
-   IP
-========================= */
-
-.ip-box {
-    max-width: 510px;
-
-    margin:
-        42px auto 0;
-
-    display: flex;
-
-    align-items: center;
-
-    justify-content: space-between;
-
-    gap: 15px;
-
-    padding: 7px;
-
-    background:
-        rgba(7, 24, 37, .72);
-
-    border:
-        1px solid rgba(120,220,255,.15);
-
-    box-shadow:
-        0 15px 50px rgba(0,0,0,.25);
-
-    backdrop-filter: blur(15px);
-}
-
-.ip-info {
-    padding-left: 19px;
-
-    text-align: left;
-}
-
-.ip-label {
-    display: block;
-
-    color: #607b89;
-
-    font-size: 9px;
-    font-weight: 800;
-
-    letter-spacing: 3px;
-
-    margin-bottom: 4px;
-}
-
-#serverIP {
-    color: #e7fbff;
-
-    font-family: monospace;
-
-    font-size: 16px;
-    font-weight: 700;
-
+    font-family: Arial, Helvetica, sans-serif;
+    color: var(--ink);
+    background: var(--forest);
+  }
+
+  h1, h2, h3, .btn, nav a, .logo, .tag, .ip {
+    font-family: "Arial Black", Arial, Helvetica, sans-serif;
+    text-transform: uppercase;
     letter-spacing: .5px;
-}
+  }
 
-.copy-btn {
-    height: 43px;
+  p { font-size: 17px; line-height: 1.55; }
 
-    padding:
-        0 18px;
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 0 20px; }
 
-    border:
-        1px solid rgba(120,220,255,.22);
-
+  /* Wood plank texture */
+  .wood {
     background:
-        rgba(90,210,255,.07);
+      repeating-linear-gradient(0deg, rgba(0,0,0,.06) 0 2px, transparent 2px 9px),
+      linear-gradient(180deg, var(--wood-light), var(--wood) 45%, var(--wood-dark));
+  }
 
-    color:
-        var(--blue2);
-
-    font-size: 10px;
-    font-weight: 800;
-
-    letter-spacing: 1.5px;
-
-    cursor: pointer;
-
-    transition: .25s;
-}
-
-.copy-btn:hover {
-    background:
-        rgba(100,220,255,.15);
-
-    border-color:
-        rgba(140,235,255,.6);
-}
-
-/* =========================
-   SECTIONS
-========================= */
-
-.section {
-    position: relative;
-
-    padding:
-        120px 7%;
-
-    z-index: 2;
-}
-
-.section-heading {
-    text-align: center;
-
-    max-width: 700px;
-
-    margin:
-        0 auto 60px;
-}
-
-.section-heading .label {
-    color: var(--blue);
-
-    font-size: 10px;
-    font-weight: 800;
-
-    letter-spacing: 5px;
-
-    margin-bottom: 15px;
-}
-
-.section-heading h2 {
-    color: white;
-
-    font-family: 'Cinzel', serif;
-
-    font-size:
-        clamp(30px, 5vw, 52px);
-
-    letter-spacing: 2px;
-
-    text-shadow:
-        0 0 25px rgba(100,220,255,.12);
-}
-
-.section-heading p {
-    color: #7895a3;
-
-    line-height: 1.7;
-
-    margin-top: 17px;
-}
-
-/* =========================
-   FEATURE CARDS
-========================= */
-
-.cards {
-    max-width: 1150px;
-
-    margin: auto;
-
-    display: grid;
-
-    grid-template-columns:
-        repeat(3, 1fr);
-
-    gap: 17px;
-}
-
-.card {
-    position: relative;
-
-    min-height: 235px;
-
-    padding: 35px 30px;
-
-    background:
-        linear-gradient(
-            145deg,
-            rgba(10,31,47,.72),
-            rgba(4,15,25,.78)
-        );
-
-    border:
-        1px solid rgba(120,220,255,.11);
-
-    backdrop-filter: blur(12px);
-
-    overflow: hidden;
-
-    transition:
-        .35s;
-}
-
-.card::before {
-    content: "";
-
-    position: absolute;
-
-    left: 0;
-    right: 0;
-    top: 0;
-
-    height: 1px;
-
-    background:
-        linear-gradient(
-            90deg,
-            transparent,
-            rgba(120,225,255,.5),
-            transparent
-        );
-
-    opacity: 0;
-
-    transition: .35s;
-}
-
-.card::after {
-    content: "";
-
-    position: absolute;
-
-    width: 140px;
-    height: 140px;
-
-    right: -80px;
-    bottom: -80px;
-
-    border-radius: 50%;
-
-    background:
-        rgba(60,200,255,.08);
-
-    filter: blur(15px);
-
-    transition: .35s;
-}
-
-.card:hover {
-    transform:
-        translateY(-8px);
-
-    border-color:
-        rgba(130,230,255,.3);
-
-    box-shadow:
-        0 20px 60px rgba(0,0,0,.35),
-        0 0 35px rgba(60,200,255,.05);
-}
-
-.card:hover::before {
-    opacity: 1;
-}
-
-.card:hover::after {
-    transform: scale(1.5);
-}
-
-.card-icon {
-    width: 47px;
-    height: 47px;
-
-    display: flex;
+  /* Yellow chunky button */
+  .btn {
+    display: inline-flex;
     align-items: center;
-    justify-content: center;
-
-    margin-bottom: 23px;
-
-    color: var(--blue2);
-
-    border:
-        1px solid rgba(130,225,255,.2);
-
-    background:
-        rgba(100,220,255,.045);
-
-    font-size: 21px;
-
-    box-shadow:
-        inset 0 0 20px rgba(100,220,255,.035);
-}
-
-.card h3 {
-    color: #eafaff;
-
-    font-family: 'Cinzel', serif;
-
+    gap: 8px;
     font-size: 16px;
+    color: var(--ink);
+    text-decoration: none;
+    background: linear-gradient(180deg, #ffe066, var(--yellow));
+    border: none;
+    border-radius: 12px;
+    box-shadow: 0 5px 0 var(--yellow-dark), 0 8px 12px rgba(0,0,0,.25);
+    padding: 12px 26px;
+    cursor: pointer;
+    transition: transform .08s, box-shadow .08s;
+  }
+  .btn:hover { transform: translateY(-2px); box-shadow: 0 7px 0 var(--yellow-dark), 0 10px 14px rgba(0,0,0,.25); }
+  .btn:active { transform: translateY(4px); box-shadow: 0 1px 0 var(--yellow-dark); }
 
-    letter-spacing: 1px;
-
-    margin-bottom: 12px;
-}
-
-.card p {
-    color: #75909e;
-
-    font-size: 14px;
-
-    line-height: 1.75;
-}
-
-/* =========================
-   ABOUT
-========================= */
-
-.about {
-    max-width: 1100px;
-
-    margin: auto;
-
-    display: grid;
-
-    grid-template-columns:
-        1fr 1fr;
-
-    align-items: center;
-
-    gap: 90px;
-}
-
-.about-art {
-    position: relative;
-
-    min-height: 430px;
-
+  /* Header */
+  header {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    border-bottom: 4px solid var(--ink);
+    box-shadow: 0 6px 12px rgba(0,0,0,.35);
+  }
+  header .wrap {
     display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.orbit {
-    position: absolute;
-
-    width: 340px;
-    height: 340px;
-
-    border:
-        1px solid rgba(100,220,255,.16);
-
-    border-radius: 50%;
-
-    transform:
-        rotateX(65deg)
-        rotateZ(15deg);
-
-    box-shadow:
-        0 0 40px rgba(70,210,255,.05);
-}
-
-.orbit.two {
-    width: 260px;
-    height: 260px;
-
-    transform:
-        rotateX(65deg)
-        rotateZ(-25deg);
-
-    border-color:
-        rgba(255,255,255,.13);
-}
-
-.core {
-    position: relative;
-
-    width: 145px;
-    height: 145px;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    border:
-        1px solid rgba(160,240,255,.5);
-
-    background:
-        radial-gradient(
-            circle,
-            rgba(130,235,255,.2),
-            rgba(20,100,140,.05) 55%,
-            transparent 70%
-        );
-
-    transform: rotate(45deg);
-
-    box-shadow:
-        0 0 50px rgba(70,210,255,.18),
-        inset 0 0 35px rgba(150,240,255,.08);
-}
-
-.core span {
-    transform: rotate(-45deg);
-
-    font-family: 'Cinzel', serif;
-
-    color: white;
-
-    font-size: 48px;
-
-    text-shadow:
-        0 0 25px var(--blue);
-}
-
-.about-text .label {
-    color: var(--blue);
-
-    font-size: 10px;
-    font-weight: 800;
-
-    letter-spacing: 5px;
-}
-
-.about-text h2 {
-    font-family: 'Cinzel', serif;
-
-    font-size:
-        clamp(32px, 5vw, 48px);
-
-    line-height: 1.1;
-
-    margin:
-        15px 0 25px;
-
-    color: white;
-}
-
-.about-text p {
-    color: #819ba8;
-
-    line-height: 1.85;
-
-    margin-bottom: 17px;
-
-    font-size: 15px;
-}
-
-.about-text strong {
-    color: var(--blue2);
-}
-
-/* =========================
-   SERVER INFO
-========================= */
-
-.server-panel {
-    max-width: 1000px;
-
-    margin: auto;
-
-    padding: 45px;
-
-    background:
-        linear-gradient(
-            135deg,
-            rgba(11,36,53,.62),
-            rgba(4,15,25,.75)
-        );
-
-    border:
-        1px solid rgba(130,225,255,.14);
-
-    backdrop-filter: blur(15px);
-
-    box-shadow:
-        0 30px 80px rgba(0,0,0,.25);
-}
-
-.server-grid {
-    display: grid;
-
-    grid-template-columns:
-        repeat(2, 1fr);
-
-    gap: 13px;
-}
-
-.server-item {
-    display: flex;
-
-    align-items: center;
-
-    gap: 16px;
-
-    padding: 20px;
-
-    background:
-        rgba(120,220,255,.025);
-
-    border:
-        1px solid rgba(120,220,255,.08);
-}
-
-.server-item .symbol {
-    width: 34px;
-    height: 34px;
-
-    flex-shrink: 0;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    color: var(--blue2);
-
-    border:
-        1px solid rgba(120,220,255,.2);
-}
-
-.server-item span {
-    color: #91aab6;
-
-    font-size: 14px;
-}
-
-/* =========================
-   APPLICATIONS
-========================= */
-
-.applications {
-    max-width: 1000px;
-
-    margin: auto;
-
-    display: grid;
-
-    grid-template-columns:
-        repeat(2, 1fr);
-
-    gap: 18px;
-}
-
-.application {
-    position: relative;
-
-    min-height: 320px;
-
-    padding: 38px;
-
-    display: flex;
-    flex-direction: column;
     justify-content: space-between;
-
-    background:
-        linear-gradient(
-            145deg,
-            rgba(10,33,50,.72),
-            rgba(3,14,23,.8)
-        );
-
-    border:
-        1px solid rgba(120,220,255,.13);
-
-    overflow: hidden;
-
-    transition: .35s;
-}
-
-.application::before {
-    content: "";
-
-    position: absolute;
-
-    width: 250px;
-    height: 250px;
-
-    right: -130px;
-    top: -130px;
-
-    border-radius: 50%;
-
-    background:
-        rgba(80,215,255,.08);
-
-    filter: blur(20px);
-}
-
-.application:hover {
-    transform:
-        translateY(-7px);
-
-    border-color:
-        rgba(130,230,255,.35);
-
-    box-shadow:
-        0 25px 70px rgba(0,0,0,.35);
-}
-
-.application-number {
-    color:
-        rgba(130,230,255,.15);
-
-    font-family: 'Cinzel', serif;
-
-    font-size: 60px;
-
-    font-weight: 900;
-
-    line-height: 1;
-}
-
-.application h3 {
-    position: relative;
-
-    color: white;
-
-    font-family: 'Cinzel', serif;
-
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+  }
+  .logo {
     font-size: 22px;
-
-    letter-spacing: 1px;
-
-    margin:
-        20px 0 10px;
-}
-
-.application p {
-    position: relative;
-
-    color: #78939f;
-
-    font-size: 14px;
-
-    line-height: 1.7;
-
-    max-width: 420px;
-
-    margin-bottom: 25px;
-}
-
-.application .btn {
-    position: relative;
-
-    width: fit-content;
-}
-
-/* =========================
-   CTA
-========================= */
-
-.cta {
-    position: relative;
-
-    padding:
-        150px 20px;
-
-    text-align: center;
-
-    overflow: hidden;
-}
-
-.cta::before {
-    content: "";
-
-    position: absolute;
-
-    left: 50%;
-    top: 50%;
-
-    width: 800px;
-    height: 350px;
-
-    transform:
-        translate(-50%, -50%);
-
-    background:
-        radial-gradient(
-            ellipse,
-            rgba(70,215,255,.13),
-            transparent 70%
-        );
-
-    filter: blur(10px);
-}
-
-.cta h2 {
-    position: relative;
-
-    font-family: 'Cinzel', serif;
-
-    font-size:
-        clamp(45px, 8vw, 90px);
-
-    color: white;
-
-    letter-spacing: 5px;
-
-    text-shadow:
-        0 0 35px rgba(100,220,255,.22);
-}
-
-.cta p {
-    position: relative;
-
-    max-width: 550px;
-
-    margin:
-        20px auto 30px;
-
-    color: #7e9ba8;
-
-    line-height: 1.7;
-}
-
-/* =========================
-   FOOTER
-========================= */
-
-footer {
-    position: relative;
-
-    z-index: 2;
-
-    padding:
-        38px 7%;
-
-    display: flex;
-
-    align-items: center;
-
-    justify-content: space-between;
-
-    border-top:
-        1px solid rgba(120,220,255,.09);
-
-    color: #516a76;
-
-    font-size: 12px;
-}
-
-.footer-logo {
-    color: #b9eaf6;
-
-    font-family: 'Cinzel', serif;
-
+    color: var(--yellow);
+    text-decoration: none;
+    text-shadow: 0 3px 0 var(--ink);
+  }
+  nav { display: flex; gap: 6px; flex-wrap: wrap; }
+  nav a {
+    color: #fff;
+    text-decoration: none;
     font-size: 15px;
+    padding: 8px 16px;
+    border-radius: 10px;
+    text-shadow: 0 2px 0 var(--ink);
+  }
+  nav a:hover, nav a.active {
+    background: var(--ink);
+    color: var(--yellow);
+    box-shadow: inset 0 -3px 0 var(--yellow);
+  }
 
-    font-weight: 800;
-
-    letter-spacing: 4px;
-}
-
-/* =========================
-   TOAST
-========================= */
-
-.toast {
-    position: fixed;
-
-    left: 50%;
-    bottom: 30px;
-
-    z-index: 5000;
-
-    transform:
-        translate(-50%, 100px);
-
-    opacity: 0;
-
-    padding:
-        13px 22px;
-
-    color: #dffaff;
-
+  /* Forest hero */
+  .hero {
+    position: relative;
+    overflow: hidden;
+    padding: 60px 0 220px;
+    text-align: center;
     background:
-        rgba(5,22,34,.95);
+      linear-gradient(180deg, rgba(0,0,0,.35), transparent 30%),
+      /* back tree trunks */
+      linear-gradient(90deg, transparent 6%, #17302d 6% 10%, transparent 10% 26%, #17302d 26% 29%, transparent 29% 70%, #17302d 70% 74%, transparent 74% 88%, #17302d 88% 92%, transparent 92%),
+      var(--forest);
+  }
+  /* canopy across the top */
+  .hero::before {
+    content: "";
+    position: absolute;
+    left: -5%; right: -5%; top: -60px;
+    height: 180px;
+    background:
+      radial-gradient(circle at 5% 60%, var(--forest-dark) 0 90px, transparent 91px),
+      radial-gradient(circle at 20% 40%, var(--forest-dark) 0 110px, transparent 111px),
+      radial-gradient(circle at 38% 55%, var(--forest-dark) 0 90px, transparent 91px),
+      radial-gradient(circle at 55% 35%, var(--forest-dark) 0 120px, transparent 121px),
+      radial-gradient(circle at 72% 55%, var(--forest-dark) 0 95px, transparent 96px),
+      radial-gradient(circle at 90% 40%, var(--forest-dark) 0 115px, transparent 116px);
+  }
+  /* bushes along the bottom */
+  .bushes {
+    position: absolute;
+    left: -5%; right: -5%; bottom: 0;
+    height: 230px;
+    background:
+      radial-gradient(circle at 4% 100%, var(--leaf-2) 0 120px, transparent 121px),
+      radial-gradient(circle at 17% 95%, var(--leaf) 0 150px, transparent 151px),
+      radial-gradient(circle at 33% 100%, var(--leaf-2) 0 130px, transparent 131px),
+      radial-gradient(circle at 50% 105%, var(--leaf) 0 160px, transparent 161px),
+      radial-gradient(circle at 66% 100%, var(--leaf-2) 0 140px, transparent 141px),
+      radial-gradient(circle at 82% 95%, var(--leaf) 0 150px, transparent 151px),
+      radial-gradient(circle at 96% 100%, var(--leaf-2) 0 120px, transparent 121px);
+  }
+  .bushes::after {
+    content: "";
+    position: absolute;
+    left: 0; right: 0; bottom: 0;
+    height: 60px;
+    background: var(--grass);
+  }
 
-    border:
-        1px solid rgba(120,225,255,.35);
+  /* Mushrooms */
+  .shroom {
+    position: absolute;
+    bottom: 50px;
+    z-index: 1;
+  }
+  .shroom .cap {
+    width: 150px; height: 80px;
+    background:
+      radial-gradient(circle at 30% 45%, #e8e8e8 0 14px, transparent 15px),
+      radial-gradient(circle at 65% 30%, #e8e8e8 0 11px, transparent 12px),
+      radial-gradient(circle at 80% 70%, #e8e8e8 0 9px, transparent 10px),
+      #d62b2b;
+    border-radius: 80px 80px 16px 16px;
+    box-shadow: inset 0 -10px 0 #a51d1d;
+  }
+  .shroom .stem {
+    width: 44px; height: 70px;
+    margin: -6px auto 0;
+    background: #e9dcc4;
+    border-radius: 0 0 14px 14px;
+    box-shadow: inset -8px 0 0 #cdbd9f;
+  }
+  .s1 { left: 3%; transform: rotate(-6deg); }
+  .s2 { right: 4%; transform: rotate(5deg) scale(.85); }
 
-    box-shadow:
-        0 10px 35px rgba(0,0,0,.4),
-        0 0 20px rgba(70,210,255,.08);
+  /* Hanging sign */
+  .sign-hang {
+    position: relative;
+    z-index: 2;
+    display: inline-block;
+    max-width: 100%;
+  }
+  .rope {
+    width: 4px;
+    height: 40px;
+    margin: 0 auto;
+    background: var(--ink);
+  }
+  .nail {
+    width: 34px; height: 34px;
+    border-radius: 50%;
+    margin: -6px auto -18px;
+    position: relative;
+    z-index: 3;
+    background: radial-gradient(circle at 40% 35%, #d49a5d, #8e4518);
+    border: 3px solid var(--ink);
+  }
+  .title {
+    position: relative;
+    z-index: 2;
+    margin: 0;
+    font-size: 78px;
+    line-height: 1;
+    color: var(--yellow);
+    text-shadow:
+      0 7px 0 var(--ink),
+      3px 3px 0 var(--ink), -3px 3px 0 var(--ink), 3px -3px 0 var(--ink), -3px -3px 0 var(--ink);
+  }
+  .title span { color: #fff; }
 
-    font-size: 10px;
+  /* Wood-framed parchment panel */
+  .frame {
+    padding: 16px;
+    border-radius: 16px;
+    border: 4px solid var(--ink);
+    box-shadow: 0 10px 0 rgba(0,0,0,.35);
+  }
+  .paper {
+    background:
+      radial-gradient(ellipse at center, var(--paper) 55%, var(--paper-dark));
+    border-radius: 10px;
+    box-shadow: inset 0 0 0 3px rgba(58,29,11,.18), inset 0 4px 10px rgba(0,0,0,.08);
+    padding: 30px 36px;
+  }
 
-    font-weight: 800;
+  .ip-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 24px;
+    flex-wrap: wrap;
+  }
+  .ip { font-size: 38px; color: var(--ink); word-break: break-all; }
 
-    letter-spacing: 2px;
+  .pills {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  .pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: rgba(58,29,11,.08);
+    border-radius: 999px;
+    padding: 5px 8px 5px 5px;
+    font-size: 15px;
+  }
+  .tag {
+    font-size: 12px;
+    background: var(--ink);
+    color: var(--yellow);
+    padding: 4px 11px;
+    border-radius: 999px;
+  }
+  .pill b { font-family: "Arial Black", Arial, sans-serif; }
+  .small-copy {
+    font: inherit;
+    font-size: 12px;
+    text-transform: uppercase;
+    color: #7a5a44;
+    background: none;
+    border: none;
+    border-left: 2px solid rgba(58,29,11,.2);
+    padding: 2px 10px;
+    cursor: pointer;
+  }
+  .small-copy:hover { color: var(--ink); }
 
-    transition: .35s;
+  /* Round wood badges row */
+  .badges {
+    position: relative;
+    z-index: 4;
+    margin-top: -150px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 28px;
+  }
+  .badge-card {
+    text-decoration: none;
+    color: #fff;
+    text-align: center;
+    transition: transform .1s;
+  }
+  .badge-card:hover { transform: translateY(-5px); }
+  .badge {
+    width: 120px; height: 120px;
+    margin: 0 auto -34px;
+    position: relative;
+    z-index: 2;
+    border-radius: 50%;
+    border: 4px solid var(--ink);
+    display: grid;
+    place-items: center;
+    background:
+      radial-gradient(circle at 40% 35%, var(--wood-light), var(--wood) 60%, var(--wood-dark));
+    box-shadow: inset 0 0 0 8px rgba(0,0,0,.08), 0 6px 0 rgba(0,0,0,.3);
+  }
+  .badge svg { width: 60px; height: 60px; }
+  .plank {
+    padding: 46px 18px 20px;
+    border-radius: 14px;
+    border: 4px solid var(--ink);
+    box-shadow: 0 8px 0 rgba(0,0,0,.35);
+  }
+  .plank h3 {
+    margin: 0 0 4px;
+    font-size: 24px;
+    text-shadow: 0 3px 0 var(--ink);
+  }
+  .plank p { margin: 0; font-size: 15px; color: #ffe9cf; }
 
-    backdrop-filter: blur(15px);
-}
+  /* Sections below */
+  .forest-floor {
+    background:
+      linear-gradient(180deg, var(--grass) 0 20px, var(--forest-dark) 20px);
+    padding: 70px 0 30px;
+  }
+  .section { padding: 40px 0 60px; }
+  .heading {
+    text-align: center;
+    margin: 0 0 34px;
+    font-size: 44px;
+    color: var(--yellow);
+    text-shadow:
+      0 5px 0 var(--ink),
+      2px 2px 0 var(--ink), -2px 2px 0 var(--ink), 2px -2px 0 var(--ink), -2px -2px 0 var(--ink);
+  }
 
-.toast.show {
-    opacity: 1;
+  /* Game mode signs */
+  .modes {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+    gap: 28px;
+  }
+  .mode .paper { padding: 26px 24px; height: 100%; display: flex; flex-direction: column; }
+  .mode-frame { height: 100%; }
+  .mode-top {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 12px;
+  }
+  .mode-icon {
+    flex: none;
+    width: 58px; height: 58px;
+    border-radius: 14px;
+    border: 3px solid var(--ink);
+    display: grid;
+    place-items: center;
+    background: var(--accent);
+    box-shadow: inset 0 -5px 0 rgba(0,0,0,.2);
+  }
+  .mode-icon svg { width: 32px; height: 32px; }
+  .mode h3 { margin: 0; font-size: 24px; line-height: 1.1; color: var(--ink); }
+  .mode p { margin: 0 0 20px; flex: 1; }
+  .mode .tags { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 18px; }
+  .mode .tags span {
+    font-family: "Arial Black", Arial, sans-serif;
+    text-transform: uppercase;
+    font-size: 11px;
+    color: #fff;
+    background: var(--accent);
+    border-radius: 999px;
+    padding: 4px 10px;
+  }
+  .mode .btn { align-self: flex-start; }
 
-    transform:
-        translate(-50%, 0);
-}
+  .spear   { --accent: #e0662a; }
+  .diamond { --accent: #1fa8b3; }
+  .life    { --accent: #cf2e3a; }
 
-/* =========================
-   SCROLL REVEAL
-========================= */
+  /* Join steps */
+  .steps {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+    gap: 22px;
+  }
+  .step .paper { padding: 22px; height: 100%; }
+  .step .frame { padding: 10px; height: 100%; }
+  .num {
+    display: inline-grid;
+    place-items: center;
+    width: 46px; height: 46px;
+    font-family: "Arial Black", Arial, sans-serif;
+    font-size: 20px;
+    color: var(--ink);
+    background: linear-gradient(180deg, #ffe066, var(--yellow));
+    border-radius: 12px;
+    box-shadow: 0 4px 0 var(--yellow-dark);
+    margin-bottom: 12px;
+  }
+  .step p { margin: 0; }
 
-.reveal {
-    opacity: 0;
+  /* Apply */
+  .apply {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+    gap: 28px;
+  }
+  .apply h3 { margin: 0 0 8px; font-size: 26px; }
+  .apply p { margin: 0 0 18px; }
 
-    transform:
-        translateY(30px);
+  footer {
+    border-top: 4px solid var(--ink);
+    color: #ffe9cf;
+    text-align: center;
+    padding: 22px 20px;
+    font-size: 14px;
+    text-shadow: 0 2px 0 var(--ink);
+  }
 
-    transition:
-        opacity .8s ease,
-        transform .8s ease;
-}
+  #toast {
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: "Arial Black", Arial, sans-serif;
+    text-transform: uppercase;
+    color: var(--ink);
+    background: var(--yellow);
+    border: 3px solid var(--ink);
+    border-radius: 12px;
+    padding: 10px 20px;
+    box-shadow: 0 5px 0 var(--ink);
+    display: none;
+    z-index: 20;
+  }
 
-.reveal.visible {
-    opacity: 1;
-
-    transform:
-        translateY(0);
-}
-
-/* =========================
-   MOBILE
-========================= */
-
-@media(max-width: 850px) {
-
-    .navbar {
-        padding:
-            0 20px;
-    }
-
-    .nav-links {
-        gap: 15px;
-    }
-
-    .nav-links a {
-        font-size: 9px;
-    }
-
-    .cards {
-        grid-template-columns: 1fr;
-    }
-
-    .about {
-        grid-template-columns: 1fr;
-
-        gap: 30px;
-    }
-
-    .about-art {
-        min-height: 320px;
-    }
-
-    .server-grid {
-        grid-template-columns: 1fr;
-    }
-
-    .applications {
-        grid-template-columns: 1fr;
-    }
-
-    footer {
-        flex-direction: column;
-
-        gap: 15px;
-
-        text-align: center;
-    }
-}
-
-@media(max-width: 550px) {
-
-    .nav-links a:nth-child(2),
-    .nav-links a:nth-child(3) {
-        display: none;
-    }
-
-    .logo {
-        font-size: 18px;
-
-        letter-spacing: 4px;
-    }
-
-    .hero h1 {
-        font-size: 63px;
-    }
-
-    .hero-description {
-        font-size: 15px;
-    }
-
-    .buttons {
-        flex-direction: column;
-    }
-
-    .buttons .btn {
-        width: 100%;
-    }
-
-    .ip-box {
-        flex-direction: column;
-
-        padding:
-            17px;
-    }
-
-    .ip-info {
-        padding: 0;
-
-        text-align: center;
-    }
-
-    .copy-btn {
-        width: 100%;
-    }
-
-    .section {
-        padding:
-            90px 20px;
-    }
-
-    .server-panel {
-        padding:
-            22px;
-    }
-
-    .application {
-        padding:
-            28px;
-    }
-
-    .orbit {
-        width: 260px;
-        height: 260px;
-    }
-
-    .orbit.two {
-        width: 200px;
-        height: 200px;
-    }
-}
+  @media (max-width: 760px) {
+    .title { font-size: 48px; }
+    .ip { font-size: 24px; }
+    .paper { padding: 22px 18px; }
+    .shroom { display: none; }
+    .hero { padding-bottom: 200px; }
+    .badges { grid-template-columns: 1fr; gap: 40px; margin-top: -140px; }
+    .heading { font-size: 32px; }
+  }
 </style>
 </head>
-
 <body>
 
-<!-- =========================
-     SNOW
-========================= -->
+<header class="wood">
+  <div class="wrap">
+    <a href="#" class="logo">Divine SMP</a>
+    <nav>
+      <a href="#modes" class="active">Modes</a>
+      <a href="#">Vote</a>
+      <a href="#">Store</a>
+      <a href="#">Discord</a>
+    </nav>
+  </div>
+</header>
 
-<div id="particles"></div>
+<div class="hero">
+  <div class="bushes"></div>
+  <div class="shroom s1"><div class="cap"></div><div class="stem"></div></div>
+  <div class="shroom s2"><div class="cap"></div><div class="stem"></div></div>
 
+  <div class="wrap">
+    <h1 class="title">Divine <span>SMP</span></h1>
 
-<!-- =========================
-     NAVIGATION
-========================= -->
-
-<nav class="navbar">
-
-    <div class="logo">
-        DIVINE<span>✦</span>
-    </div>
-
-    <div class="nav-links">
-        <a href="#about">ABOUT</a>
-        <a href="#features">FEATURES</a>
-        <a href="#applications">APPLICATIONS</a>
-        <a href="#join">PLAY</a>
-    </div>
-
-</nav>
-
-
-<!-- =========================
-     HERO
-========================= -->
-
-<section class="hero">
-
-    <div class="hero-content">
-
-        <div class="emblem">
-            <span>✦</span>
-        </div>
-
-        <div class="overline">
-            ENTER THE REALM
-        </div>
-
-        <h1>
-            DIVINE<span>.</span>
-        </h1>
-
-        <p class="hero-description">
-            A new Minecraft experience forged for those who want
-            to build, fight, explore, and leave their mark upon
-            a world of legends.
-        </p>
-
-        <div class="buttons">
-
-            <a
-                href="#join"
-                class="btn btn-primary"
-            >
-                JOIN DIVINE
-            </a>
-
-            <a
-                href="#about"
-                class="btn btn-secondary"
-            >
-                EXPLORE THE REALM
-            </a>
-
-        </div>
-
-
-        <div class="ip-box">
-
-            <div class="ip-info">
-
-                <span class="ip-label">
-                    SERVER IP
-                </span>
-
-                <span id="serverIP">
-                    play.divinesmp.org
-                </span>
-
-            </div>
-
-            <button
-                class="copy-btn"
-                onclick="copyIP()"
-            >
-                COPY IP
+    <div class="sign-hang">
+      <div class="rope"></div>
+      <div class="nail"></div>
+      <div class="frame wood">
+        <div class="paper">
+          <div class="ip-row">
+            <span class="ip">play.divinesmp.org</span>
+            <button class="btn" onclick="copyIP('play.divinesmp.org')">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><rect x="8" y="8" width="13" height="13" rx="2"/><path d="M4 16V5a1 1 0 0 1 1-1h11"/></svg>
+              Copy
             </button>
-
+          </div>
+          <div class="pills">
+            <span class="pill"><span class="tag">Backup IP</span><b>divinesmp.org</b><button class="small-copy" onclick="copyIP('divinesmp.org')">Copy</button></span>
+            <span class="pill"><span class="tag">Modes</span>Lifesteal, SpearMace, DiamondSMP</span>
+          </div>
         </div>
-
+      </div>
     </div>
-
-</section>
-
-
-<!-- =========================
-     ABOUT
-========================= -->
-
-<section
-    class="section"
-    id="about"
->
-
-    <div class="about">
-
-        <div class="about-art reveal">
-
-            <div class="orbit"></div>
-
-            <div class="orbit two"></div>
-
-            <div class="core">
-                <span>✦</span>
-            </div>
-
-        </div>
-
-
-        <div class="about-text reveal">
-
-            <div class="label">
-                THE DIVINE EXPERIENCE
-            </div>
-
-            <h2>
-                A WORLD<br>
-                ABOVE THE REST.
-            </h2>
-
-            <p>
-                Divine is more than another Minecraft server.
-                It is a world built around <strong>community,
-                progression, competition, and freedom.</strong>
-            </p>
-
-            <p>
-                Start with nothing and build your way toward
-                greatness. Create your base, gather resources,
-                make alliances, challenge your rivals, and
-                become known throughout the realm.
-            </p>
-
-            <p>
-                <strong>Your story begins the moment you join.</strong>
-            </p>
-
-        </div>
-
-    </div>
-
-</section>
-
-
-<!-- =========================
-     FEATURES
-========================= -->
-
-<section
-    class="section"
-    id="features"
->
-
-    <div class="section-heading reveal">
-
-        <div class="label">
-            WHAT MAKES DIVINE DIFFERENT
-        </div>
-
-        <h2>
-            BUILT FOR LEGENDS
-        </h2>
-
-        <p>
-            Everything you need to create your own legacy.
-        </p>
-
-    </div>
-
-
-    <div class="cards">
-
-        <div class="card reveal">
-
-            <div class="card-icon">
-                ⚔
-            </div>
-
-            <h3>
-                COMPETITIVE PVP
-            </h3>
-
-            <p>
-                Sharpen your skills, master your equipment,
-                and prove yourself against players from
-                across the realm.
-            </p>
-
-        </div>
-
-
-        <div class="card reveal">
-
-            <div class="card-icon">
-                ◇
-            </div>
-
-            <h3>
-                PLAYER ECONOMY
-            </h3>
-
-            <p>
-                Earn wealth, trade resources, buy and sell
-                items, and create your own path toward
-                becoming one of the richest players.
-            </p>
-
-        </div>
-
-
-        <div class="card reveal">
-
-            <div class="card-icon">
-                ♜
-            </div>
-
-            <h3>
-                BUILD YOUR EMPIRE
-            </h3>
-
-            <p>
-                Turn empty land into something incredible.
-                Build bases, kingdoms, towns, and monuments
-                that define the world.
-            </p>
-
-        </div>
-
-
-        <div class="card reveal">
-
-            <div class="card-icon">
-                ✦
-            </div>
-
-            <h3>
-                COMMUNITY
-            </h3>
-
-            <p>
-                Meet new players, form alliances, create
-                rivalries, and become part of the growing
-                Divine community.
-            </p>
-
-        </div>
-
-
-        <div class="card reveal">
-
-            <div class="card-icon">
-                ❄
-            </div>
-
-            <h3>
-                EVENTS
-            </h3>
-
-            <p>
-                Take part in community events, challenges,
-                competitions, and special moments throughout
-                the Divine realm.
-            </p>
-
-        </div>
-
-
-        <div class="card reveal">
-
-            <div class="card-icon">
-                ♛
-            </div>
-
-            <h3>
-                YOUR LEGACY
-            </h3>
-
-            <p>
-                Become a name people remember. Every build,
-                battle, alliance, and achievement becomes
-                part of your story.
-            </p>
-
-        </div>
-
-    </div>
-
-</section>
-
-
-<!-- =========================
-     SERVER INFO
-========================= -->
-
-<section class="section">
-
-    <div class="section-heading reveal">
-
-        <div class="label">
-            THE REALM
-        </div>
-
-        <h2>
-            WHAT AWAITS YOU
-        </h2>
-
-        <p>
-            Step into a server where your choices matter.
-        </p>
-
-    </div>
-
-
-    <div class="server-panel reveal">
-
-        <div class="server-grid">
-
-            <div class="server-item">
-
-                <div class="symbol">✓</div>
-
-                <span>
-                    Active Minecraft community
-                </span>
-
-            </div>
-
-
-            <div class="server-item">
-
-                <div class="symbol">⚔</div>
-
-                <span>
-                    Competitive PvP gameplay
-                </span>
-
-            </div>
-
-
-            <div class="server-item">
-
-                <div class="symbol">◇</div>
-
-                <span>
-                    Player-driven economy
-                </span>
-
-            </div>
-
-
-            <div class="server-item">
-
-                <div class="symbol">✦</div>
-
-                <span>
-                    Custom server features
-                </span>
-
-            </div>
-
-
-            <div class="server-item">
-
-                <div class="symbol">♜</div>
-
-                <span>
-                    Build and establish your territory
-                </span>
-
-            </div>
-
-
-            <div class="server-item">
-
-                <div class="symbol">❄</div>
-
-                <span>
-                    Regular updates and improvements
-                </span>
-
-            </div>
-
-
-            <div class="server-item">
-
-                <div class="symbol">♛</div>
-
-                <span>
-                    Dedicated staff team
-                </span>
-
-            </div>
-
-
-            <div class="server-item">
-
-                <div class="symbol">∞</div>
-
-                <span>
-                    A world shaped by its players
-                </span>
-
-            </div>
-
-        </div>
-
-    </div>
-
-</section>
-
-
-<!-- =========================
-     APPLICATIONS
-========================= -->
-
-<section
-    class="section"
-    id="applications"
->
-
-    <div class="section-heading reveal">
-
-        <div class="label">
-            BECOME PART OF DIVINE
-        </div>
-
-        <h2>
-            JOIN THE TEAM
-        </h2>
-
-        <p>
-            Help shape the future of the Divine community.
-        </p>
-
-    </div>
-
-
-    <div class="applications">
-
-
-        <!-- MEDIA -->
-
-        <div class="application reveal">
-
-            <div>
-
-                <div class="application-number">
-                    01
-                </div>
-
-                <h3>
-                    MEDIA APPLICATION
-                </h3>
-
-                <p>
-                    Are you a content creator, streamer,
-                    YouTuber, or someone who wants to create
-                    content around Divine?
-                    Submit a media application.
-                </p>
-
-            </div>
-
-
-            <a
-                href="#"
-                class="btn btn-secondary"
-                onclick="openMedia(event)"
-            >
-                APPLY FOR MEDIA
-            </a>
-
-        </div>
-
-
-        <!-- STAFF -->
-
-        <div class="application reveal">
-
-            <div>
-
-                <div class="application-number">
-                    02
-                </div>
-
-                <h3>
-                    STAFF APPLICATION
-                </h3>
-
-                <p>
-                    Want to help players, manage the community,
-                    and contribute to the future of Divine?
-                    Apply to become part of the staff team.
-                </p>
-
-            </div>
-
-
-            <a
-                href="#"
-                class="btn btn-primary"
-                onclick="openStaff(event)"
-            >
-                APPLY FOR STAFF
-            </a>
-
-        </div>
-
-    </div>
-
-</section>
-
-
-<!-- =========================
-     FINAL CTA
-========================= -->
-
-<section
-    class="cta"
-    id="join"
->
-
-    <h2>
-        ASCEND.
-    </h2>
-
-    <p>
-        The realm is waiting.
-        Gather your friends, enter Divine,
-        and begin your legacy.
-    </p>
-
-    <button
-        class="btn btn-primary"
-        onclick="copyIP()"
-    >
-        COPY SERVER IP
-    </button>
-
-</section>
-
-
-<!-- =========================
-     FOOTER
-========================= -->
-
-<footer>
-
-    <div class="footer-logo">
-        DIVINE ✦
-    </div>
-
-    <div>
-        © <span id="year"></span> Divine SMP.
-        All rights reserved.
-    </div>
-
-</footer>
-
-
-<!-- =========================
-     TOAST
-========================= -->
-
-<div
-    class="toast"
-    id="toast"
->
-    IP COPIED
+  </div>
 </div>
 
+<div class="forest-floor">
+  <div class="wrap">
+    <div class="badges">
+      <a href="#" class="badge-card">
+        <div class="badge">
+          <svg viewBox="0 0 24 24" fill="#5a2a0e"><path d="M1 3h3.2l.8 3H22l-2.4 9H7L4.3 5H1z"/><circle cx="9" cy="19.5" r="2"/><circle cx="17" cy="19.5" r="2"/></svg>
+        </div>
+        <div class="plank wood"><h3>Store</h3><p>Ranks, crates and more</p></div>
+      </a>
+      <a href="#" class="badge-card">
+        <div class="badge">
+          <svg viewBox="0 0 24 24" fill="#5a2a0e"><path d="M4 3h16a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H10l-5 4v-4H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z"/><circle cx="8" cy="10" r="1.6" fill="#e0843f"/><circle cx="12" cy="10" r="1.6" fill="#e0843f"/><circle cx="16" cy="10" r="1.6" fill="#e0843f"/></svg>
+        </div>
+        <div class="plank wood"><h3>Discord</h3><p>Hang out with the community</p></div>
+      </a>
+      <a href="#" class="badge-card">
+        <div class="badge">
+          <svg viewBox="0 0 24 24" fill="#5a2a0e"><path d="M6 2h12v2h4v3a5 5 0 0 1-5 5h-.3A6 6 0 0 1 13 15.9V18h4v4H7v-4h4v-2.1A6 6 0 0 1 7.3 12H7a5 5 0 0 1-5-5V4h4zm0 4H4v1a3 3 0 0 0 2 2.8zm12 0v3.8A3 3 0 0 0 20 7V6z"/></svg>
+        </div>
+        <div class="plank wood"><h3>Vote</h3><p>Vote daily for rewards</p></div>
+      </a>
+    </div>
+
+    <!-- Game modes -->
+    <div class="section" id="modes">
+      <h2 class="heading">Game Modes</h2>
+      <div class="modes">
+
+        <div class="mode spear">
+          <div class="frame wood mode-frame">
+            <div class="paper">
+              <div class="mode-top">
+                <div class="mode-icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round"><path d="M4 20L15 9"/><path d="M13 5l6-2-2 6"/><circle cx="17" cy="7" r="0.5"/></svg>
+                </div>
+                <h3>SpearMace FFA</h3>
+              </div>
+              <div class="tags"><span>Free for all</span><span>Kits given</span></div>
+              <p>Grab a spear and a mace and jump in. Everyone's fighting everyone, so land your lunges, time your smashes and see how long your streak lasts.</p>
+              <a href="#join" class="btn">Play now</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="mode diamond">
+          <div class="frame wood mode-frame">
+            <div class="paper">
+              <div class="mode-top">
+                <div class="mode-icon">
+                  <svg viewBox="0 0 24 24" fill="#fff"><path d="M7 3h10l5 6-10 12L2 9z"/></svg>
+                </div>
+                <h3>DiamondSMP FFA</h3>
+              </div>
+              <div class="tags"><span>Full diamond</span><span>No grinding</span></div>
+              <p>Load in with a full diamond kit and fight. No mining, no waiting, just straight PvP. Good for warming up or settling who's actually the best.</p>
+              <a href="#join" class="btn">Play now</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="mode life">
+          <div class="frame wood mode-frame">
+            <div class="paper">
+              <div class="mode-top">
+                <div class="mode-icon">
+                  <svg viewBox="0 0 24 24" fill="#fff"><path d="M12 21s-9-5.6-9-12a5 5 0 0 1 9-3 5 5 0 0 1 9 3c0 6.4-9 12-9 12z"/></svg>
+                </div>
+                <h3>Lifesteal</h3>
+              </div>
+              <div class="tags"><span>Survival</span><span>Steal hearts</span></div>
+              <p>Kill a player and take one of their hearts. Die and you lose one. Build a base, gear up and pick your fights carefully, because running out means you're out.</p>
+              <a href="#join" class="btn">Play now</a>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- How to join -->
+    <div class="section" id="join">
+      <h2 class="heading">How to Join</h2>
+      <div class="steps">
+        <div class="step"><div class="frame wood"><div class="paper"><div class="num">1</div><p>Open Minecraft and click <b>Multiplayer</b>.</p></div></div></div>
+        <div class="step"><div class="frame wood"><div class="paper"><div class="num">2</div><p>Click <b>Add Server</b>.</p></div></div></div>
+        <div class="step"><div class="frame wood"><div class="paper"><div class="num">3</div><p>Type <b>play.divinesmp.org</b> as the address.</p></div></div></div>
+        <div class="step"><div class="frame wood"><div class="paper"><div class="num">4</div><p>Hit <b>Done</b>, join, and pick a mode.</p></div></div></div>
+      </div>
+    </div>
+
+    <!-- Apply -->
+    <div class="section">
+      <h2 class="heading">Join the Team</h2>
+      <div class="apply">
+        <div class="frame wood"><div class="paper">
+          <h3>Staff</h3>
+          <p>Help players out, keep chat clean and help run the server. You need to be active and friendly.</p>
+          <a class="btn" href="#">Apply for Staff</a>
+        </div></div>
+        <div class="frame wood"><div class="paper">
+          <h3>Media</h3>
+          <p>Make YouTube videos, TikToks or stream on the server? Apply for the media rank.</p>
+          <a class="btn" href="#">Apply for Media</a>
+        </div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer class="wood">
+  &copy; 2026 Divine SMP. Not affiliated with Mojang or Microsoft.
+</footer>
+
+<div id="toast">IP copied!</div>
 
 <script>
-
-/* =========================================================
-   DIVINE CONFIG
-   CHANGE THESE 3 VALUES
-========================================================= */
-
-const CONFIG = {
-
-    /*
-       YOUR MINECRAFT SERVER IP
-    */
-
-    serverIP: "play.divinesmp.org",
-
-
-    /*
-       YOUR GOOGLE DOC FOR MEDIA APPLICATION
-    */
-
-    mediaApplication:
-        "https://forms.gle/wQZFSe1756dDV7nb8",
-
-
-    /*
-       YOUR GOOGLE DOC FOR STAFF APPLICATION
-    */
-
-    staffApplication:
-        "https://forms.gle/cHmSndUaw6H9QtNT8"
-
-};
-
-
-/* =========================================================
-   PUT SERVER IP ON WEBSITE
-========================================================= */
-
-document.getElementById("serverIP").textContent =
-    CONFIG.serverIP;
-
-
-/* =========================================================
-   COPY SERVER IP
-========================================================= */
-
-function copyIP() {
-
-    const ip = CONFIG.serverIP;
-
+  function copyIP(ip) {
+    var done = function () {
+      var t = document.getElementById('toast');
+      t.style.display = 'block';
+      setTimeout(function () { t.style.display = 'none'; }, 1800);
+    };
     if (navigator.clipboard) {
-
-        navigator.clipboard.writeText(ip)
-            .then(() => {
-                showToast("SERVER IP COPIED");
-            })
-            .catch(() => {
-                fallbackCopy(ip);
-            });
-
+      navigator.clipboard.writeText(ip).then(done, function () { fallback(ip); done(); });
     } else {
-
-        fallbackCopy(ip);
-
+      fallback(ip); done();
     }
-
-}
-
-
-function fallbackCopy(text) {
-
-    const input =
-        document.createElement("input");
-
-    input.value = text;
-
-    document.body.appendChild(input);
-
-    input.select();
-
-    document.execCommand("copy");
-
-    document.body.removeChild(input);
-
-    showToast("SERVER IP COPIED");
-
-}
-
-
-/* =========================================================
-   MEDIA APPLICATION
-========================================================= */
-
-function openMedia(event) {
-
-    event.preventDefault();
-
-    window.location.href =
-        CONFIG.mediaApplication;
-
-}
-
-
-/* =========================================================
-   STAFF APPLICATION
-========================================================= */
-
-function openStaff(event) {
-
-    event.preventDefault();
-
-    window.location.href =
-        CONFIG.staffApplication;
-
-}
-
-
-/* =========================================================
-   TOAST
-========================================================= */
-
-let toastTimeout;
-
-function showToast(message) {
-
-    const toast =
-        document.getElementById("toast");
-
-    toast.textContent =
-        message;
-
-    toast.classList.add("show");
-
-    clearTimeout(toastTimeout);
-
-    toastTimeout =
-        setTimeout(() => {
-
-            toast.classList.remove("show");
-
-        }, 2200);
-
-}
-
-
-/* =========================================================
-   SNOW / STARS
-========================================================= */
-
-const particles =
-    document.getElementById("particles");
-
-for (let i = 0; i < 65; i++) {
-
-    const particle =
-        document.createElement("div");
-
-    particle.className =
-        "particle";
-
-    const size =
-        Math.random() > .8
-        ? 4
-        : 2 + Math.random() * 2;
-
-    particle.style.width =
-        size + "px";
-
-    particle.style.height =
-        size + "px";
-
-    particle.style.left =
-        Math.random() * 100 + "%";
-
-    particle.style.animationDuration =
-        8 + Math.random() * 15 + "s";
-
-    particle.style.animationDelay =
-        Math.random() * 12 + "s";
-
-    particles.appendChild(
-        particle
-    );
-
-}
-
-
-/* =========================================================
-   SCROLL REVEAL
-========================================================= */
-
-const revealElements =
-    document.querySelectorAll(".reveal");
-
-
-const observer =
-    new IntersectionObserver(
-
-        entries => {
-
-            entries.forEach(entry => {
-
-                if (
-                    entry.isIntersecting
-                ) {
-
-                    entry.target.classList.add(
-                        "visible"
-                    );
-
-                    observer.unobserve(
-                        entry.target
-                    );
-
-                }
-
-            });
-
-        },
-
-        {
-            threshold: .12
-        }
-
-    );
-
-
-revealElements.forEach(element => {
-
-    observer.observe(element);
-
-});
-
-
-/* =========================================================
-   CURRENT YEAR
-========================================================= */
-
-document.getElementById("year").textContent =
-    new Date().getFullYear();
-
+  }
+  function fallback(ip) {
+    var el = document.createElement('textarea');
+    el.value = ip;
+    document.body.appendChild(el);
+    el.select();
+    try { document.execCommand('copy'); } catch (e) {}
+    document.body.removeChild(el);
+  }
 </script>
 
 </body>
 </html>
-```
