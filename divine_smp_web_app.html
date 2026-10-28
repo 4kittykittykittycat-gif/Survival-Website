@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+<script>document.documentElement.className += " js";</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Divine SMP — Lifesteal Minecraft Server</title>
+<meta name="description" content="Divine SMP is a Minecraft Lifesteal server with a massive 50k x 50k world border. Join at play.divinesmp.org or play directly in browser via client.divinesmp.org or chromiumclient.com.">
+<meta name="theme-color" content="#0b1a18">
+<link rel="icon" type="image/png" href="favicon.png">
+
+<!-- Fonts & Tailwind CSS -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Plus+Jakarta+Sans:wght@500;700;800;900&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        fontFamily: {
+          sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+          serif: ['Cinzel', 'serif'],
+        },
+        colors: {
+          brand: {
+            bg: '#0b1a18',
+            emerald: '#132a26',
+            emeraldLight: '#1d3e38',
+            gold: '#f29c38',
+            goldBright: '#ffc107',
+            goldDark: '#b86c14',
+            woodDark: '#1b0d06',
+            woodPlank: '#421f0c',
+            woodBorder: '#2b1307',
+            ink: '#211005',
+            inkSoft: '#3a2010',
+            parchment: '#f7ebce',
+            parchmentDark: '#ebd6a7',
+          }
+        }
+      }
+    }
+  }
+</script>
+
+<style>
+  /* Custom High-Contrast Textures */
+  .wood-plank-panel {
+    background: linear-gradient(180deg, #4d260f 0%, #36190a 50%, #240e04 100%);
+    border: 3px solid #1c0b03;
+    box-shadow: inset 0 1px 0 rgba(255, 200, 150, 0.2), inset 0 -4px 0 rgba(0, 0, 0, 0.7), 0 12px 28px rgba(0,0,0,0.6);
+  }
+
+  .glass-parchment {
+    background: linear-gradient(135deg, #fbf2de 0%, #edd9b1 100%);
+    border: 2px solid #2e1608;
+    box-shadow: inset 0 0 15px rgba(120, 60, 20, 0.18), 0 4px 12px rgba(0,0,0,0.4);
+    color: #211005;
+  }
+
+  .dark-card {
+    background: linear-gradient(180deg, rgba(19, 42, 38, 0.95) 0%, rgba(11, 26, 24, 0.98) 100%);
+    border: 1px solid rgba(46, 92, 83, 0.7);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+  }
+
+  .nail-head {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 35% 35%, #ffffff 0%, #9e9181 50%, #3b3228 100%);
+    border: 1px solid #140802;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.6);
+    z-index: 10;
+  }
+
+  /* Falling Leaf Animation */
+  .leaf {
+    position: absolute;
+    top: -30px;
+    pointer-events: none;
+    animation: fall linear infinite;
+  }
+  .leaf-drift { animation: drift ease-in-out infinite alternate; }
+  .leaf-svg { animation: flutter linear infinite; }
+
+  @keyframes fall { to { top: 105%; } }
+  @keyframes drift { from { transform: translateX(-30px); } to { transform: translateX(30px); } }
+  @keyframes flutter {
+    0% { transform: rotate(0deg) rotateY(0deg); }
+    50% { transform: rotate(180deg) rotateY(160deg); }
+    100% { transform: rotate(360deg) rotateY(360deg); }
+  }
+
+  .reveal {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+  }
+  .reveal.in {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .nav-item.active {
+    background-color: rgba(242, 156, 56, 0.15);
+    color: #f29c38;
+    border-bottom: 2px solid #f29c38;
+  }
+</style>
+</head>
+
+<body class="bg-brand-bg text-stone-100 font-sans antialiased selection:bg-brand-gold selection:text-brand-woodDark overflow-x-hidden">
+
+  <!-- Client Announcement Bar -->
+  <div class="bg-gradient-to-r from-emerald-950 via-brand-emerald to-emerald-950 border-b border-brand-emeraldLight/80 py-2.5 px-4 text-center text-xs sm:text-sm font-medium text-stone-200 relative z-50">
+    <div class="max-w-6xl mx-auto flex flex-wrap items-center justify-center gap-x-6 gap-y-2">
+      <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded bg-amber-500/20 text-brand-gold font-bold text-[11px] uppercase tracking-wider border border-brand-gold/40">
+        Play in Browser
+      </span>
+      <span class="font-semibold text-stone-200">No downloads needed:</span>
+      <div class="flex items-center gap-4 font-bold">
+        <a href="https://client.divinesmp.org" target="_blank" rel="noopener" class="text-brand-gold hover:text-brand-goldBright hover:underline flex items-center gap-1 transition-colors">
+          ⚡ Divine Client <span class="text-[10px] text-stone-300 font-normal">(Lightweight)</span> &rarr;
+        </a>
+        <span class="text-stone-600">|</span>
+        <a href="https://chromiumclient.com" target="_blank" rel="noopener" class="text-brand-gold hover:text-brand-goldBright hover:underline flex items-center gap-1 transition-colors">
+          ⚙️ Chromium Client <span class="text-[10px] text-stone-300 font-normal">(Fabric 26.2 Eaglercraft)</span> &rarr;
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Header Navigation -->
+  <header class="sticky top-0 z-40 bg-brand-bg/95 backdrop-blur-md border-b border-brand-emeraldLight/60 shadow-xl">
+    <div class="max-w-7xl mx-auto px-4 sm:px-8 py-3 flex items-center justify-between">
+      
+      <!-- Brand Logo -->
+      <a href="#top" class="flex items-center gap-3">
+        <img src="divine-logo.png" alt="Divine SMP Logo" class="h-10 sm:h-11 w-auto drop-shadow-md" onerror="this.src='https://placehold.co/180x50/132a26/f29c38?text=Divine+SMP'">
+      </a>
+
+      <!-- Desktop Nav -->
+      <nav id="nav" class="hidden md:flex items-center gap-1 font-bold text-xs uppercase tracking-wider text-stone-200">
+        <a href="#top" data-spy="top" class="nav-item px-3.5 py-2 rounded-lg hover:text-white hover:bg-brand-emerald transition-all">Home</a>
+        <a href="#lifesteal" data-spy="lifesteal" class="nav-item px-3.5 py-2 rounded-lg hover:text-white hover:bg-brand-emerald transition-all">Lifesteal</a>
+        <a href="#clients" data-spy="clients" class="nav-item px-3.5 py-2 rounded-lg hover:text-white hover:bg-brand-emerald transition-all">Browser Clients</a>
+        <a href="#join" data-spy="join" class="nav-item px-3.5 py-2 rounded-lg hover:text-white hover:bg-brand-emerald transition-all">How to Join</a>
+        <a href="#team" data-spy="team" class="nav-item px-3.5 py-2 rounded-lg hover:text-white hover:bg-brand-emerald transition-all">Apply</a>
+
+        <div class="h-4 w-px bg-stone-700/60 mx-2"></div>
+
+        <a href="https://store.divinesmp.org" target="_blank" rel="noopener" class="px-4 py-2 rounded-lg bg-gradient-to-b from-amber-400 to-brand-goldDark text-brand-woodDark font-black shadow hover:brightness-110 transition-all border border-amber-900/40">
+          Store ↗
+        </a>
+      </nav>
+
+      <!-- Mobile Nav Button -->
+      <button id="menuBtn" class="md:hidden p-2 rounded-lg bg-brand-emerald border border-brand-emeraldLight text-brand-gold focus:outline-none" aria-label="Toggle Menu">
+        <svg class="w-6 h-6 fill-current" viewBox="0 0 24 24"><path d="M4 6h16v2H4zm0 5h16v2H4zm0 5h16v2H4z"/></svg>
+      </button>
+    </div>
+
+    <!-- Mobile Drawer -->
+    <div id="mobileNav" class="hidden md:hidden px-4 pt-2 pb-4 flex-col gap-2 font-bold text-xs uppercase text-center border-t border-brand-emeraldLight/60 bg-brand-bg">
+      <a href="#top" class="py-2.5 rounded bg-brand-emerald/60 text-stone-100">Home</a>
+      <a href="#lifesteal" class="py-2.5 rounded bg-brand-emerald/60 text-stone-100">Lifesteal Gamemode</a>
+      <a href="#clients" class="py-2.5 rounded bg-brand-emerald/60 text-stone-100">Browser Clients</a>
+      <a href="#join" class="py-2.5 rounded bg-brand-emerald/60 text-stone-100">How to Join</a>
+      <a href="#team" class="py-2.5 rounded bg-brand-emerald/60 text-stone-100">Apply for Team</a>
+      <a href="https://store.divinesmp.org" target="_blank" rel="noopener" class="py-2.5 rounded bg-brand-gold text-brand-woodDark font-black">Store ↗</a>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section id="top" class="relative min-h-[80vh] py-16 flex flex-col justify-center items-center overflow-hidden bg-gradient-to-b from-brand-bg via-brand-emerald to-brand-bg">
+    
+    <div id="leaves" class="absolute inset-0 pointer-events-none z-10 overflow-hidden"></div>
+
+    <div class="relative z-20 max-w-5xl mx-auto px-4 text-center flex flex-col items-center">
+      
+      <!-- Hero Banner Vector Title -->
+      <div class="w-full max-w-2xl mb-4">
+        <svg class="w-full h-auto drop-shadow-[0_12px_24px_rgba(0,0,0,0.85)]" viewBox="0 100 800 250" role="img" aria-label="Divine SMP Title Banner">
+          <defs>
+            <linearGradient id="plankGrad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#4a240e"/>
+              <stop offset="50%" stop-color="#331808"/>
+              <stop offset="100%" stop-color="#1e0c03"/>
+            </linearGradient>
+            <linearGradient id="goldText" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#fff2c2"/>
+              <stop offset="50%" stop-color="#f29c38"/>
+              <stop offset="100%" stop-color="#ab5e0a"/>
+            </linearGradient>
+          </defs>
+          <path d="M58,236 Q48,262 62,288 L738,292 Q756,264 740,234 Z" fill="url(#plankGrad)" stroke="#120601" stroke-width="8" stroke-linejoin="round"/>
+          <path d="M64,244 L736,242" stroke="#663818" stroke-width="4" stroke-linecap="round"/>
+          <text x="400" y="215" text-anchor="middle" font-family="'Cinzel', serif" font-weight="900" font-size="88" fill="url(#goldText)" stroke="#120601" stroke-width="12" paint-order="stroke" letter-spacing="8">DIVINE SMP</text>
+          <g transform="translate(400,320)">
+            <rect x="-110" y="-22" width="220" height="44" rx="8" fill="url(#plankGrad)" stroke="#120601" stroke-width="5"/>
+            <text x="0" y="8" text-anchor="middle" font-family="'Plus Jakarta Sans', sans-serif" font-weight="900" font-size="22" fill="#f29c38" letter-spacing="4">LIFESTEAL SMP</text>
+          </g>
+        </svg>
+      </div>
+
+      <p class="text-base sm:text-xl text-stone-200 font-medium max-w-2xl mb-8 leading-relaxed">
+        The ultimate Minecraft Lifesteal experience. <br class="hidden sm:inline">Defeat opponents, steal their max hearts, and dominate our massive world.
+      </p>
+
+      <!-- High Contrast Copy Server IP Box -->
+      <div class="w-full max-w-lg mb-10">
+        <div class="wood-plank-panel rounded-2xl p-4 relative">
+          <div class="nail-head top-2.5 left-2.5"></div><div class="nail-head top-2.5 right-2.5"></div>
+          <div class="nail-head bottom-2.5 left-2.5"></div><div class="nail-head bottom-2.5 right-2.5"></div>
+          
+          <div class="glass-parchment rounded-xl p-4 sm:p-5 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div class="text-center sm:text-left">
+              <span class="text-[11px] font-black uppercase text-brand-inkSoft tracking-wider block">Java Server Address</span>
+              <span class="text-2xl sm:text-3xl font-mono font-black text-brand-ink tracking-tight select-all">play.divinesmp.org</span>
+            </div>
+
+            <button onclick="copyIP('play.divinesmp.org')" class="w-full sm:w-auto px-6 py-3 bg-gradient-to-b from-amber-400 to-brand-goldDark hover:brightness-110 text-brand-woodDark font-black text-xs uppercase rounded-lg border border-brand-woodBorder shadow active:translate-y-0.5 transition-all flex items-center justify-center gap-2">
+              <svg class="w-4 h-4 stroke-current stroke-[2.5]" fill="none" viewBox="0 0 24 24"><rect x="8" y="8" width="13" height="13" rx="2"/><path d="M4 16V5a1 1 0 0 1 1-1h11"/></svg>
+              Copy IP
+            </button>
+          </div>
+
+          <!-- Status Bar -->
+          <div class="mt-3 flex items-center justify-between px-2 text-xs font-bold text-stone-200">
+            <span class="flex items-center gap-2">
+              <span id="dot" class="inline-block w-2.5 h-2.5 rounded-full bg-emerald-400 shadow-[0_0_8px_#34d399]"></span>
+              <span id="status">Checking server status...</span>
+            </span>
+            <span class="text-brand-gold font-mono text-[11px]">Java 1.20+</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick Action Cards -->
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 w-full max-w-3xl">
+        <a href="#clients" class="dark-card rounded-xl p-4 text-center hover:border-brand-gold/80 transition-all">
+          <div class="text-2xl mb-1">💻</div>
+          <h3 class="font-bold text-stone-100 text-xs uppercase tracking-wider">Browser Clients</h3>
+          <p class="text-[11px] text-stone-300 mt-1">Play instantly in browser</p>
+        </a>
+
+        <a href="https://store.divinesmp.org" target="_blank" rel="noopener" class="dark-card rounded-xl p-4 text-center hover:border-brand-gold/80 transition-all">
+          <div class="text-2xl mb-1">💎</div>
+          <h3 class="font-bold text-stone-100 text-xs uppercase tracking-wider">Server Store</h3>
+          <p class="text-[11px] text-stone-300 mt-1">Ranks, Keys & Perks</p>
+        </a>
+
+        <a href="https://discord.gg" target="_blank" rel="noopener" class="dark-card rounded-xl p-4 text-center hover:border-brand-gold/80 transition-all">
+          <div class="text-2xl mb-1">💬</div>
+          <h3 class="font-bold text-stone-100 text-xs uppercase tracking-wider">Discord Server</h3>
+          <p class="text-[11px] text-stone-300 mt-1">Join the community</p>
+        </a>
+      </div>
+
+    </div>
+  </section>
+
+  <div class="h-1 bg-gradient-to-r from-transparent via-brand-emeraldLight to-transparent"></div>
+
+  <!-- Main Section -->
+  <main class="max-w-6xl mx-auto px-4 py-16 space-y-20">
+
+    <!-- Lifesteal Section -->
+    <section id="lifesteal" class="scroll-mt-24 reveal">
+      <div class="text-center mb-8">
+        <h2 class="text-3xl sm:text-4xl font-serif font-black text-brand-gold uppercase tracking-wider">Lifesteal Gamemode</h2>
+        <p class="text-stone-300 text-sm mt-2 font-medium">Core survival gameplay with real consequences.</p>
+      </div>
+
+      <div class="dark-card rounded-2xl p-6 sm:p-8 border border-brand-emeraldLight">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+          
+          <div class="lg:col-span-7 space-y-4">
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-red-950/80 border border-red-500/40 text-red-300 font-bold text-xs uppercase tracking-wider">
+              ❤️ Active Server
+            </div>
+            
+            <h3 class="text-2xl sm:text-3xl font-serif font-bold text-stone-100">
+              Steal Hearts. Eliminate Rivals. Dominate.
+            </h3>
+
+            <p class="text-stone-200 text-sm sm:text-base leading-relaxed">
+              Every battle on Divine SMP carries real stakes. When you eliminate a player in combat, you permanently steal one of their maximum hearts. Explore our massive world, craft heart revives, construct secure bases, and fight for survival!
+            </p>
+
+            <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 pt-2 text-xs font-bold">
+              <div class="p-3 rounded-lg bg-brand-bg/80 border border-brand-emeraldLight">
+                <span class="text-stone-400 block font-normal text-[11px]">Start Health</span>
+                <span class="text-brand-gold text-sm">10 Max Hearts</span>
+              </div>
+              <div class="p-3 rounded-lg bg-brand-bg/80 border border-brand-emeraldLight">
+                <span class="text-stone-400 block font-normal text-[11px]">Heart Recipe</span>
+                <span class="text-brand-gold text-sm">Craftable Hearts</span>
+              </div>
+              <div class="p-3 rounded-lg bg-brand-bg/80 border border-brand-emeraldLight">
+                <span class="text-stone-400 block font-normal text-[11px]">World Border</span>
+                <span class="text-brand-gold text-sm">50,000 x 50,000</span>
+              </div>
+            </div>
+
+            <div class="pt-4 flex flex-wrap gap-3">
+              <button onclick="copyIP('play.divinesmp.org')" class="px-6 py-3 bg-gradient-to-b from-amber-400 to-brand-goldDark text-brand-woodDark font-black text-xs uppercase tracking-wider rounded-lg shadow hover:brightness-110 transition-all border border-amber-900/40">
+                Join Lifesteal Now
+              </button>
+              <a href="https://store.divinesmp.org" target="_blank" rel="noopener" class="px-6 py-3 bg-brand-emerald hover:bg-brand-emeraldLight text-stone-100 font-bold text-xs uppercase tracking-wider rounded-lg border border-brand-emeraldLight transition-all">
+                Server Store ↗
+              </a>
+            </div>
+          </div>
+
+          <div class="lg:col-span-5 flex justify-center">
+            <div class="w-full max-w-xs p-6 wood-plank-panel rounded-2xl text-center">
+              <div class="glass-parchment rounded-xl p-6 flex flex-col items-center">
+                <svg class="w-24 h-24 drop-shadow-md mb-3" viewBox="0 0 120 120">
+                  <path d="M60 106 C20 80 8 58 8 38 C8 22 20 12 34 12 C46 12 55 19 60 28 C65 19 74 12 86 12 C100 12 112 22 112 38 C112 58 100 80 60 106Z" fill="#dc2626" stroke="#120601" stroke-width="4"/>
+                </svg>
+                <span class="font-serif font-black text-xl text-brand-ink uppercase">Lifesteal</span>
+                <span class="text-xs font-bold text-brand-inkSoft mt-1">Kill = Claim Heart</span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- Browser Clients Section -->
+    <section id="clients" class="scroll-mt-24 reveal">
+      <div class="text-center mb-8">
+        <h2 class="text-3xl sm:text-4xl font-serif font-black text-brand-gold uppercase tracking-wider">Browser Web Clients</h2>
+        <p class="text-stone-300 text-sm mt-2 font-medium">Play Divine SMP inside your web browser on Chromebooks or low-end PCs.</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        
+        <!-- Client 1 -->
+        <div class="dark-card rounded-2xl p-6 border border-brand-emeraldLight flex flex-col justify-between hover:border-brand-gold/70 transition-all">
+          <div>
+            <div class="flex items-center justify-between mb-3">
+              <span class="text-[11px] font-black uppercase tracking-wider text-amber-300 bg-amber-950/80 border border-amber-500/40 px-2.5 py-1 rounded">Option 1</span>
+              <span class="text-xs font-mono font-bold text-stone-300">client.divinesmp.org</span>
+            </div>
+
+            <h3 class="text-xl font-bold text-stone-100 mb-2">Divine Client (Lightweight)</h3>
+            <p class="text-stone-200 text-xs sm:text-sm leading-relaxed mb-6">
+              Ultra-lightweight browser client built for fast load times and maximum FPS. Perfect for quick gaming sessions without installation.
+            </p>
+          </div>
+
+          <a href="https://client.divinesmp.org" target="_blank" rel="noopener" class="w-full py-3 bg-gradient-to-b from-amber-400 to-brand-goldDark text-brand-woodDark font-black text-xs uppercase tracking-wider rounded-lg text-center shadow hover:brightness-110 transition-all border border-amber-900/40">
+            Launch Divine Client ↗
+          </a>
+        </div>
+
+        <!-- Client 2 -->
+        <div class="dark-card rounded-2xl p-6 border border-brand-emeraldLight flex flex-col justify-between hover:border-brand-gold/70 transition-all">
+          <div>
+            <div class="flex items-center justify-between mb-3">
+              <span class="text-[11px] font-black uppercase tracking-wider text-emerald-300 bg-emerald-950/80 border border-emerald-500/40 px-2.5 py-1 rounded">Option 2</span>
+              <span class="text-xs font-mono font-bold text-stone-300">chromiumclient.com</span>
+            </div>
+
+            <h3 class="text-xl font-bold text-stone-100 mb-2">Chromium Client (Fabric 26.2 Eaglercraft)</h3>
+            <p class="text-stone-200 text-xs sm:text-sm leading-relaxed mb-6">
+              Feature-rich Eaglercraft client running Fabric 26.2 in browser. Includes performance tweaks, mods support, and expanded player options.
+            </p>
+          </div>
+
+          <a href="https://chromiumclient.com" target="_blank" rel="noopener" class="w-full py-3 bg-brand-emerald hover:bg-brand-emeraldLight text-stone-100 font-bold text-xs uppercase tracking-wider rounded-lg border border-brand-emeraldLight text-center transition-all">
+            Launch Chromium Client ↗
+          </a>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- How To Join -->
+    <section id="join" class="scroll-mt-24 reveal">
+      <div class="text-center mb-8">
+        <h2 class="text-3xl sm:text-4xl font-serif font-black text-brand-gold uppercase tracking-wider">How to Join</h2>
+        <p class="text-stone-300 text-sm mt-2 font-medium">Connect via standard Minecraft launcher in under a minute.</p>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div class="dark-card rounded-xl p-5 border border-brand-emeraldLight text-center">
+          <div class="w-8 h-8 rounded-full bg-brand-gold text-brand-woodDark font-black text-sm flex items-center justify-center mx-auto mb-3">1</div>
+          <h4 class="font-bold text-stone-100 text-xs uppercase tracking-wider">Open Minecraft</h4>
+          <p class="text-xs text-stone-300 mt-1">Start version 1.20+ and click <span class="text-stone-100 font-bold">Multiplayer</span>.</p>
+        </div>
+
+        <div class="dark-card rounded-xl p-5 border border-brand-emeraldLight text-center">
+          <div class="w-8 h-8 rounded-full bg-brand-gold text-brand-woodDark font-black text-sm flex items-center justify-center mx-auto mb-3">2</div>
+          <h4 class="font-bold text-stone-100 text-xs uppercase tracking-wider">Add Server</h4>
+          <p class="text-xs text-stone-300 mt-1">Click <span class="text-stone-100 font-bold">Add Server</span> in multiplayer menu.</p>
+        </div>
+
+        <div class="dark-card rounded-xl p-5 border border-brand-emeraldLight text-center">
+          <div class="w-8 h-8 rounded-full bg-brand-gold text-brand-woodDark font-black text-sm flex items-center justify-center mx-auto mb-3">3</div>
+          <h4 class="font-bold text-stone-100 text-xs uppercase tracking-wider">Type Address</h4>
+          <p class="text-xs text-stone-300 mt-1">Enter <span class="text-brand-gold font-mono font-bold select-all">play.divinesmp.org</span>.</p>
+        </div>
+
+        <div class="dark-card rounded-xl p-5 border border-brand-emeraldLight text-center">
+          <div class="w-8 h-8 rounded-full bg-brand-gold text-brand-woodDark font-black text-sm flex items-center justify-center mx-auto mb-3">4</div>
+          <h4 class="font-bold text-stone-100 text-xs uppercase tracking-wider">Join Server</h4>
+          <p class="text-xs text-stone-300 mt-1">Click <span class="text-stone-100 font-bold">Done</span> and hop directly into game!</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Team Section -->
+    <section id="team" class="scroll-mt-24 reveal">
+      <div class="text-center mb-8">
+        <h2 class="text-3xl sm:text-4xl font-serif font-black text-brand-gold uppercase tracking-wider">Applications</h2>
+        <p class="text-stone-300 text-sm mt-2 font-medium">Get involved in staff operations or media creation.</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div class="dark-card rounded-2xl p-6 border border-brand-emeraldLight flex items-start gap-4">
+          <div class="text-2xl p-3 rounded-xl bg-brand-emerald border border-brand-emeraldLight flex-shrink-0">🛡️</div>
+          <div>
+            <h3 class="text-lg font-bold text-stone-100">Staff Application</h3>
+            <p class="text-xs text-stone-300 my-2 leading-relaxed">
+              Active, friendly player? Apply for staff to moderate chat, assist players, and keep the server fair.
+            </p>
+            <a href="https://discord.gg" target="_blank" rel="noopener" class="text-xs font-bold text-brand-gold hover:underline uppercase tracking-wider">
+              Apply via Discord &rarr;
+            </a>
+          </div>
+        </div>
+
+        <div class="dark-card rounded-2xl p-6 border border-brand-emeraldLight flex items-start gap-4">
+          <div class="text-2xl p-3 rounded-xl bg-brand-emerald border border-brand-emeraldLight flex-shrink-0">🎬</div>
+          <div>
+            <h3 class="text-lg font-bold text-stone-100">Media Rank</h3>
+            <p class="text-xs text-stone-300 my-2 leading-relaxed">
+              Recording YouTube videos or streaming Divine SMP? Apply for content creator perks and rank tags.
+            </p>
+            <a href="https://discord.gg" target="_blank" rel="noopener" class="text-xs font-bold text-brand-gold hover:underline uppercase tracking-wider">
+              Apply for Media Rank &rarr;
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-brand-bg border-t border-brand-emeraldLight/80 py-10 px-4 text-center text-xs text-stone-400">
+    <div class="max-w-4xl mx-auto space-y-4">
+      <div class="flex flex-wrap items-center justify-center gap-6 font-bold uppercase text-stone-200">
+        <a href="#lifesteal" class="hover:text-brand-gold transition-colors">Lifesteal</a>
+        <a href="#clients" class="hover:text-brand-gold transition-colors">Browser Clients</a>
+        <a href="https://store.divinesmp.org" target="_blank" rel="noopener" class="hover:text-brand-gold transition-colors">Store</a>
+        <a href="https://discord.gg" target="_blank" rel="noopener" class="hover:text-brand-gold transition-colors">Discord</a>
+      </div>
+
+      <p>&copy; 2026 Divine SMP. Not affiliated with or endorsed by Mojang AB or Microsoft.</p>
+    </div>
+  </footer>
+
+  <!-- Toast Feed -->
+  <div id="toast" class="fixed bottom-6 left-1/2 -translate-x-1/2 bg-amber-400 text-brand-woodDark font-black text-xs uppercase tracking-wider px-5 py-2.5 rounded-lg border border-amber-900 shadow-2xl z-50 transition-all transform translate-y-20 opacity-0 pointer-events-none">
+    IP copied to clipboard!
+  </div>
+
+  <!-- Back to top -->
+  <a href="#top" id="toTop" class="fixed bottom-6 right-6 w-10 h-10 bg-brand-emerald border border-brand-emeraldLight text-brand-gold font-bold text-lg rounded-lg flex items-center justify-center z-40 transition-all opacity-0 translate-y-10 pointer-events-none hover:bg-brand-emeraldLight">
+    ↑
+  </a>
+
+  <!-- JS Logic -->
+  <script>
+    var toastTimer;
+    function copyIP(ip) {
+      function showToast() {
+        var toast = document.getElementById('toast');
+        toast.classList.remove('translate-y-20', 'opacity-0', 'pointer-events-none');
+        clearTimeout(toastTimer);
+        toastTimer = setTimeout(function() {
+          toast.classList.add('translate-y-20', 'opacity-0', 'pointer-events-none');
+        }, 2200);
+      }
+
+      if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(ip).then(showToast, function() { fallbackCopy(ip); showToast(); });
+      } else {
+        fallbackCopy(ip);
+        showToast();
+      }
+    }
+
+    function fallbackCopy(text) {
+      var area = document.createElement("textarea");
+      area.value = text;
+      area.style.position = "fixed";
+      area.style.left = "-9999px";
+      document.body.appendChild(area);
+      area.select();
+      try { document.execCommand('copy'); } catch (e) {}
+      document.body.removeChild(area);
+    }
+
+    (function() {
+      var btn = document.getElementById('menuBtn');
+      var nav = document.getElementById('mobileNav');
+      btn.addEventListener('click', function() {
+        nav.classList.toggle('hidden');
+        nav.classList.toggle('flex');
+      });
+      nav.addEventListener('click', function(e) {
+        if (e.target.tagName === 'A') {
+          nav.classList.add('hidden');
+          nav.classList.remove('flex');
+        }
+      });
+    })();
+
+    (function() {
+      var links = document.querySelectorAll('nav a[data-spy]');
+      var sections = ['top', 'lifesteal', 'clients', 'join', 'team'];
+      var toTop = document.getElementById('toTop');
+
+      function onScroll() {
+        var current = 'top';
+        sections.forEach(function(id) {
+          var el = document.getElementById(id);
+          if (el && el.getBoundingClientRect().top < 180) {
+            current = id;
+          }
+        });
+
+        links.forEach(function(link) {
+          if (link.getAttribute('data-spy') === current) {
+            link.classList.add('active');
+          } else {
+            link.classList.remove('active');
+          }
+        });
+
+        if (window.scrollY > 400) {
+          toTop.classList.remove('opacity-0', 'translate-y-10', 'pointer-events-none');
+        } else {
+          toTop.classList.add('opacity-0', 'translate-y-10', 'pointer-events-none');
+        }
+      }
+
+      window.addEventListener('scroll', onScroll, { passive: true });
+      onScroll();
+    })();
+
+    (function() {
+      var dot = document.getElementById('dot');
+      var status = document.getElementById('status');
+
+      fetch('https://api.mcsrvstat.us/3/play.divinesmp.org')
+        .then(function(res) { return res.json(); })
+        .then(function(data) {
+          if (data.online) {
+            var players = data.players ? data.players.online : 0;
+            dot.className = "inline-block w-2.5 h-2.5 rounded-full bg-emerald-400 shadow-[0_0_8px_#34d399]";
+            status.innerHTML = "<strong class='text-emerald-300'>" + players + "</strong> " + (players === 1 ? "Player Online" : "Players Online");
+          } else {
+            dot.className = "inline-block w-2.5 h-2.5 rounded-full bg-red-500 shadow-[0_0_8px_#f87171]";
+            status.textContent = "Server Offline";
+          }
+        })
+        .catch(function() {
+          status.textContent = "Status unavailable";
+        });
+    })();
+
+    (function() {
+      var container = document.getElementById('leaves');
+      if (!container) return;
+
+      var leafPaths = [
+        '<path d="M12 2 C16 8 22 12 12 22 C2 12 8 8 12 2 Z" fill="#34d399" opacity="0.5"/>',
+        '<path d="M12 2 C16 8 22 12 12 22 C2 12 8 8 12 2 Z" fill="#f29c38" opacity="0.5"/>'
+      ];
+
+      var count = window.innerWidth < 640 ? 10 : 20;
+      for (var i = 0; i < count; i++) {
+        var leaf = document.createElement('div');
+        leaf.className = 'leaf';
+        leaf.style.left = Math.random() * 100 + '%';
+        leaf.style.animationDuration = (12 + Math.random() * 10) + 's';
+        leaf.style.animationDelay = (-Math.random() * 15) + 's';
+
+        var size = 14 + Math.random() * 10;
+        var svg = leafPaths[Math.floor(Math.random() * leafPaths.length)];
+
+        leaf.innerHTML = '<div class="leaf-drift" style="animation-duration:' + (3 + Math.random() * 3) + 's">' +
+          '<svg class="leaf-svg" width="' + size + '" height="' + size + '" viewBox="0 0 24 24" style="animation-duration:' + (4 + Math.random() * 4) + 's">' +
+          svg + '</svg></div>';
+
+        container.appendChild(leaf);
+      }
+    })();
+
+    (function() {
+      var reveals = document.querySelectorAll('.reveal');
+      if (!('IntersectionObserver' in window)) {
+        reveals.forEach(function(el) { el.classList.add('in'); });
+        return;
+      }
+
+      var observer = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('in');
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.1 });
+
+      reveals.forEach(function(el) { observer.observe(el); });
+    })();
+  </script>
+</body>
+</html>
